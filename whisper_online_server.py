@@ -51,6 +51,7 @@ else:
 import line_packet
 import socket
 
+
 class Connection:
     '''it wraps conn object'''
     PACKET_SIZE = 32000*5*60 # 5 minutes # was: 65536
@@ -78,6 +79,7 @@ class Connection:
             return r
         except ConnectionResetError:
             return None
+
 
 
 import io
@@ -165,7 +167,23 @@ class ServerProcessor:
 #        o = online.finish()  # this should be working
 #        self.send_result(o)
 
+# listen using websocket protocol
+logger.info('listen using websocket')
+import asyncio
+from websockets.asyncio.server import serve
 
+async def handler(websocket):
+    async for message in websocket:
+        logger.info('receive message')
+        await websocket.send(message)
+
+async def websocket_loop():
+    async with serve(handler, "localhost", 8765) as server:
+        await server.serve_forever()
+
+asyncio.run(websocket_loop())
+
+exit(0)
 
 # server loop
 
@@ -182,3 +200,6 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
         conn.close()
         logger.info('Connection to client closed')
 logger.info('Connection closed, terminating.')
+
+
+
