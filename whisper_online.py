@@ -116,7 +116,7 @@ class FasterWhisperASR(ASRBase):
 
 
         # this worked fast and reliably on NVIDIA L40
-        # change data to int8
+        # change data to int8, as we only have the crapping NVidia cards
         model = WhisperModel(model_size_or_path, device="cuda", compute_type="int8", download_root=cache_dir)
 
         # or run on GPU with INT8
