@@ -11,7 +11,7 @@ logger = logging.getLogger(__name__)
 parser = argparse.ArgumentParser()
 
 # server options
-parser.add_argument("--host", type=str, default='localhost')
+parser.add_argument("--host", type=str, default='0.0.0.0')
 parser.add_argument("--port", type=int, default=43007)
 parser.add_argument("--warmup-file", type=str, dest="warmup_file", 
         help="The path to a speech audio wav file to warm up Whisper so that the very first chunk processing is fast. It can be e.g. https://github.com/ggerganov/whisper.cpp/raw/master/samples/jfk.wav .")
@@ -166,24 +166,6 @@ class ServerProcessor:
 
 #        o = online.finish()  # this should be working
 #        self.send_result(o)
-
-# listen using websocket protocol
-logger.info('listen using websocket')
-import asyncio
-from websockets.asyncio.server import serve
-
-async def handler(websocket):
-    async for message in websocket:
-        logger.info('receive message')
-        await websocket.send(message)
-
-async def websocket_loop():
-    async with serve(handler, "localhost", 8765) as server:
-        await server.serve_forever()
-
-asyncio.run(websocket_loop())
-
-exit(0)
 
 # server loop
 
