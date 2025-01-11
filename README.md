@@ -268,3 +268,5 @@ Credits:
 Dominik Macháček, machacek@ufal.mff.cuni.cz
 
 ### Added 
+
+1. use int8 as fasterWhisper decoding options
